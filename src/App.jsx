@@ -40,7 +40,7 @@ function App() {
     setProcessing(true);
     setResultCsv(null);
 
-    const targetColumn = processType === 'voice' ? 'phone_number' : 'Offer Id';
+    const targetColumn = 'Offer Id';
 
     const reader = new FileReader();
     reader.onload = (e) => {
