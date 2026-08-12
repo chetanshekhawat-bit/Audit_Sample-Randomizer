@@ -100,29 +100,28 @@ function App() {
       }
     });
 
-    // Randomize and select 2
+    // Randomize and select 5
     const results = [];
     Object.keys(groups).forEach(empName => {
       const targetValues = Array.from(groups[empName]);
-      let selected = ["", ""];
-      
-      if (targetValues.length >= 2) {
-        // Randomly pick 2 distinct indices
-        const idx1 = Math.floor(Math.random() * targetValues.length);
-        let idx2 = Math.floor(Math.random() * targetValues.length);
-        while (idx2 === idx1) {
-          idx2 = Math.floor(Math.random() * targetValues.length);
+      const selected = [];
+      const tempValues = [...targetValues];
+      const limit = 5;
+
+      for (let i = 0; i < limit; i++) {
+        if (tempValues.length > 0) {
+          const randIdx = Math.floor(Math.random() * tempValues.length);
+          selected.push(tempValues.splice(randIdx, 1)[0]);
+        } else {
+          selected.push("");
         }
-        selected = [targetValues[idx1], targetValues[idx2]];
-      } else if (targetValues.length === 1) {
-        selected = [targetValues[0], ""];
       }
 
-      results.push({
-        'Emp Name': empName,
-        [`${targetColumn}1`]: selected[0],
-        [`${targetColumn}2`]: selected[1]
-      });
+      const rowResult = { 'Emp Name': empName };
+      for (let i = 0; i < limit; i++) {
+        rowResult[`${targetColumn}${i + 1}`] = selected[i];
+      }
+      results.push(rowResult);
     });
 
     return results;
@@ -152,7 +151,7 @@ function App() {
       <div className="glass-card">
         <div className="header">
           <h1>Data Randomizer</h1>
-          <p>Randomly select 2 records per employee for your process.</p>
+          <p>Randomly select 5 records per employee for your process.</p>
         </div>
 
         {!resultCsv && !processing && (
